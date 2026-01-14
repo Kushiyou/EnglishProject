@@ -1,0 +1,14 @@
+{
+	"scripts": {
+		"ai": "pnpm --filter @en/server run start:dev ai",
+		"server": "pnpm --filter @en/server run start:dev server",
+		"web": "pnpm --filter @en/web run dev",
+		"all": "concurrently \"pnpm run ai\" \"pnpm run server\" \"pnpm run web\""
+	},
+	"dependencies": {
+		"@types/md5": "^2.3.6",
+		"concurrently": "^9.2.1",
+		"dayjs": "^1.11.19",
+		"md5": "^2.3.0"
+	}
+}

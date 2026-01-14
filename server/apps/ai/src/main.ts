@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AiModule } from './ai.module';
+import { InterceptorInterceptor } from '@libs/shared/interceptor/interceptor.interceptor';
+import { InterceptorExceptionFilter } from '@libs/shared/interceptor/exceptionFilter';
+import { config } from '@en/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AiModule);
-  await app.listen(process.env.port ?? 3000);
+  app.useGlobalInterceptors(new InterceptorInterceptor());
+  app.useGlobalFilters(new InterceptorExceptionFilter());
+  await app.listen(config.ports.ai);
 }
 bootstrap();
