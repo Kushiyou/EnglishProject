@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-</script>
+import { useCounterStore } from './stores/counter'
+import { storeToRefs } from 'pinia'
 
+const counter = useCounterStore()
+/* const { count, doubleCount } = storeToRefs(counter)
+const { increment } = counter */
+
+</script>
+  
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
+      <div>
+        <p>当前计数: {{ counter.count }}</p>
+        <p>当前计数加倍: {{ counter.doubleCount }}</p>
+        <button @click="counter.increment">增加</button>
+      </div>  
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>

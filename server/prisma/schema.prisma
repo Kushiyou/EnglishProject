@@ -7,8 +7,20 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs" //制定prisma为commonJS模块格式，因为nest打包默认是commonJS模块格式，为了迎合nest的模块格式，所以这里指定为commonJS模块格式
 }
-
+//描述使用的是postgresql数据库，也可以在这更改为mysql等数据库
 datasource db {
   provider = "postgresql"
+}
+
+//用户表
+model User {
+  id String @id @default(uuid()) //主键，自增
+  name String //用户名
+  email String @unique //邮箱，唯一
+  password String //密码
+  role Role @default(USER) //角色，默认是用户角色
+  createTime DateTime @default(now()) //创建时间，默认是当前时间
+  updateTime DateTime @updatedAt //更新时间，每次更新时会自动更新
 }
