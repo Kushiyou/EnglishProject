@@ -20,6 +20,13 @@ export default defineConfig({
   },
   server:{
     port: config.ports.web,
-    open: true
+    open: true,
+    //代理配置，将 /api 开头的请求转发到后端服务器，解决开发环境下的跨域问题
+    proxy: {
+      '/api': {
+        target: `http://localhost:${config.ports.server}`,
+        changeOrigin: true,
+      },
+    },
   }
 })
