@@ -23,6 +23,7 @@ export class WordBookService {
       Object.entries(rest).map(([key, value]) => [key, this.toBoolean(value)])
     )
     //构建查询条件
+    //WordBookWhereInput 是 Prisma 自动生成的类型，表示对 WordBook 表进行查询时可以使用的条件
     const where: Prisma.WordBookWhereInput = {
       word: word ? { contains: word } : undefined,//如果提供了单词查询参数，则使用 contains 模式进行模糊匹配
       ...tags
@@ -42,8 +43,8 @@ export class WordBookService {
       this.prisma.wordBook.findMany(
         { 
           where, 
-          skip: Number((page - 1) * Number(pageSize)), 
-          take: Number(pageSize), 
+          skip: Number((page - 1) * Number(pageSize)), //计算跳过的记录数
+          take: Number(pageSize), //获取当前页的记录数
           orderBy: { frq: 'desc' } 
         })
     ])
