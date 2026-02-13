@@ -30,7 +30,8 @@
           <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">{{ item.phonetic }} <el-icon size="18"
               color="#2563EB" @click="playAudio(item.word)">
               <VideoPlay />
-            </el-icon></div>
+            </el-icon>
+          </div>
           <div class="text-sm text-gray-700 mb-1 overflow-hidden line-clamp-2">{{ item.definition }}</div>
           <div v-html="item.translation" class="text-sm text-gray-600 mb-1 overflow-hidden line-clamp-2">
           </div>
@@ -57,7 +58,7 @@ import { onMounted, ref } from 'vue';
 import { Reading, VideoPlay } from '@element-plus/icons-vue';
 import { useAudio } from '../../hooks/useAudio';
 import type { WordQuery, WordList } from '@en/common/word';
-const {playAudio} = useAudio({})
+const { playAudio } = useAudio({})
 const total = ref<WordList["total"]>(0)
 const list = ref<WordList["list"]>([]);
 const query = ref<WordQuery>({
