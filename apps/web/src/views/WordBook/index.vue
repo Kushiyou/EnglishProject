@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[1200px] mx-auto mt-10 bg-linear-to-br from-blue-50 to-indigo-50 rounded-[20px] p-20 shadow-lg">
+  <div  v-loading="loading" element-loading-text="Loading..." class="w-[1200px] mx-auto mt-10 bg-linear-to-br from-blue-50 to-indigo-50 rounded-[20px] p-20 shadow-lg">
     <div class="h-20">
       <div class="flex items-center gap-2">
         <el-icon color="#2563EB" size="20">
@@ -58,6 +58,7 @@ import { onMounted, ref } from 'vue';
 import { Reading, VideoPlay } from '@element-plus/icons-vue';
 import { useAudio } from '../../hooks/useAudio';
 import type { WordQuery, WordList } from '@en/common/word';
+const loading = ref(true)
 const { playAudio } = useAudio({})
 const total = ref<WordList["total"]>(0)
 const list = ref<WordList["list"]>([]);
@@ -83,6 +84,7 @@ const getList = async () => {
   if (res.success) {
     total.value = res.data.total;
     list.value = res.data.list;
+    loading.value = false;
   }
 }
 onMounted(() => {
