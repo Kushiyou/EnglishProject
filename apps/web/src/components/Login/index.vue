@@ -1,6 +1,6 @@
 <template>
-    <div class="fixed inset-0 bg-black opacity-30 filter blur-sm z-40"></div>
-    <div class="fixed inset-30  flex items-center justify-center z-50">
+    <div v-if="isShowLogin" class="fixed inset-0 bg-black opacity-30 filter blur-sm z-40"></div>
+    <div v-if="isShowLogin" class="fixed inset-30  flex items-center justify-center z-50">
         <div class="w-[1200px] h-[700px] bg-white rounded-[20px] shadow-2xl overflow-hidden flex">
             <!-- 左侧 3D 模型区域 -->
             <ModelViewer ref="modelViewerRef" />
@@ -18,4 +18,16 @@
 import ModelViewer from './ModelViewer.vue'
 import LoginForm from './LoginForm.vue'
 import RegisterForm from './RegisterForm.vue'
+import { ref, inject } from 'vue'
+import type { LoginType } from './type'
+import { IS_SHOW_LOGIN } from './type'
+const isShowLogin = inject(IS_SHOW_LOGIN, ref(false))
+const loginType = ref<LoginType>('login')
+
+
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        isShowLogin.value = false
+    }
+})
 </script>
