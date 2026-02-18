@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const timeout = 50000; // 设置请求超时时间为50秒
+//serverApi用于访问后端API，serverAi用于访问AI相关的API，这样可以根据不同的需求进行请求分离和管理
 export const serverApi = axios.create({
   baseURL: '/api/v1', // 设置基础URL，所有请求都会以这个URL为前缀
   timeout,
@@ -12,7 +13,7 @@ serverApi.interceptors.response.use(
   response => response.data, // 直接返回响应数据
 )
 
-
+//serverAi用于访问AI相关的API，这样可以根据不同的需求进行请求分离和管理
 export const serverAi = axios.create({
   baseURL: '/api/ai/v1', // 设置基础URL，所有请求都会以这个URL为前缀
   timeout,

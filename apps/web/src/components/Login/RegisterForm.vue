@@ -8,7 +8,7 @@
             <el-input v-model="form.name" placeholder="请输入用户名" size="large" class="h-12" :prefix-icon="User" />
         </el-form-item>
         <el-form-item  prop="phone">
-            <el-input v-model="form.phone" placeholder="请输入手机号" size="large" class="h-12" :prefix-icon="User" />
+            <el-input maxlength="11" v-model="form.phone" placeholder="请输入手机号" size="large" class="h-12" :prefix-icon="User" />
         </el-form-item>
         <el-form-item  prop="email">
             <el-input v-model="form.email" placeholder="请输入邮箱(可选)" size="large" class="h-12" :prefix-icon="User" />
@@ -29,9 +29,18 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef, toRaw } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-const form = ref({
+import { ElMessage } from 'element-plus'
+import { register } from '@/apis/user'
+import type { UserRegister } from '@en/common/user'
+import md5 from 'md5'
+import { useLogin } from '@/hooks/useLogin'
+const { hide } = useLogin()
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+const formRef = useTemplateRef('formRef')
+const form = ref<UserRegister>({
     name: '',
     phone: '',
     email: '',
@@ -53,7 +62,24 @@ const rules = {
     ],
 }
 
-const handleRegister = () => {
-   
+const handleRegister = async () => {
+   //触发校验
+   await formRef.value?.validate()
+    //如果校验通过，则调用注册接口
+    const registerData = toRaw(form.value)//获取原始数据对象，避免Vue的响应式系统对数据进行代理
+    registerData.password = md5(registerData.password) //对密码进行MD5加密
+    try {
+        const res = await register(registerData)
+        if (res.success && res.code === 200) {
+            //将数据存入pinia
+            userStore.setUser(res.data)
+            ElMessage.success('注册成功!')
+            hide() //隐藏登录注册组件
+        } else {
+            ElMessage.error('注册失败!')
+        }
+    } catch (error) {
+        ElMessage.error('注册失败，请稍后再试!')
+    }
 }
 </script>

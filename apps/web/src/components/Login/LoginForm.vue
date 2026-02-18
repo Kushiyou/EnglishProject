@@ -6,7 +6,7 @@
 
     <el-form ref="formRef" :model="form" :rules="rules" class="space-y-6">
         <el-form-item prop="phone">
-            <el-input v-model="form.phone" placeholder="请输入手机号" size="large" class="h-12" :prefix-icon="User" />
+            <el-input maxlength="11" v-model="form.phone" placeholder="请输入手机号" size="large" class="h-12" :prefix-icon="User" />
         </el-form-item>
 
         <el-form-item prop="password">
@@ -26,9 +26,19 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRaw, useTemplateRef } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-const form = ref({
+import { login } from '@/apis/user'
+import type { UserLogin } from '@en/common/user'
+import md5 from 'md5'
+import { ElMessage } from 'element-plus'
+import { useLogin } from '@/hooks/useLogin'
+import { useUserStore } from '@/stores/user'
+import { f } from 'vue-router/dist/router-CWoNjPRp.mjs'
+const userStore = useUserStore()
+const { hide } = useLogin()
+const formRef = useTemplateRef('formRef')
+const form = ref<UserLogin>({
     phone: '',
     password: '',
 })
@@ -43,7 +53,23 @@ const rules = {
     ],
 }
 
-const handleLogin = () => {
-    console.log(form.value)
+const handleLogin = async () => {
+    //验证表单
+    await formRef.value?.validate()
+    try{
+        const loginData = toRaw(form.value) //获取原始数据对象，避免Vue的响应式系统对数据进行代理
+        loginData.password = md5(loginData.password) //对密码进行MD5加密
+        const res = await login(loginData)
+        if (res.code === 200) {
+            //将数据存入pinia
+            userStore.setUser(res.data)
+            console.log('localStorage user:', userStore.getUser)
+            hide() //隐藏登录注册组件
+        } else {
+            ElMessage.error('登录失败:' + (res.code || '未知错误'))
+        }
+    }finally{
+        //hide() //隐藏登录注册组件
+    }
 }
 </script>
