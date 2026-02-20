@@ -27,3 +27,11 @@ export type Token = {
 export type WebResultUser = ResultUser & {
     token: Token
 }
+// token的payload类型，包含用户ID和令牌类型
+export type TokePlayload = Pick<User, 'name' | 'email'> & {
+    userId: User["id"] // 用户ID
+}
+//refreshToken的payload类型，包含用户ID和令牌类型
+export type RefreshTokenPlayload = TokePlayload & {
+    tokenType:'refresh' | 'access' // 令牌类型为refresh还是access
+}
