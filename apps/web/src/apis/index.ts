@@ -3,9 +3,9 @@ import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import router from '@/router';
 import { refreshTokenApi } from './auth';
-import type { st } from 'vue-router/dist/router-CWoNjPRp.mjs';
+import { ElMessage } from 'element-plus';
 
-
+export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.5:9000' : 'http://线上地址待定'
 const timeout = 50000; // 设置请求超时时间为50秒
 let isRefreshing = false; // 是否正在刷新token
 let requestQueue: ((token: string) => void)[] = []; // 刷新token的订阅者列表
@@ -14,9 +14,6 @@ let requestQueue: ((token: string) => void)[] = []; // 刷新token的订阅者�
 export const serverApi = axios.create({
   baseURL: '/api/v1', // 设置基础URL，所有请求都会以这个URL为前缀
   timeout,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
 //在请求拦截器中添加Authorization字段，这样后端就能通过这个字段来验证用户的身份了
 serverApi.interceptors.request.use(
@@ -35,7 +32,17 @@ serverApi.interceptors.request.use(
 serverApi.interceptors.response.use(
   response => response.data, // 直接返回响应数据
   async error => {
-    if (error.response && error.response.status !== 401) {
+    console.log(111);
+    
+    if(error.code == 'ERR_NETWORK'){
+      console.log(111);
+      ElMessage.error('网络异常，请稍后再试');
+      console.log(222);
+      
+      return Promise.reject(error);
+    }
+    if (error.response.status !== 401) {
+      ElMessage.error('请求错误，请稍后再试');
       return Promise.reject(error.response);
     }
     //处理401的情况，这里可以调用刷新token的接口，获取新的accessToken和refreshToken
@@ -44,6 +51,7 @@ serverApi.interceptors.response.use(
     const accessToken = userStore.getAccessToken;
     if (!refreshToken || !accessToken) {
       //如果没有refreshToken或者accessToken，表示用户没有登录或者登录状态已经过期，需要用户重新登录
+      ElMessage.error('登录状态已过期，请重新登录');
       userStore.logout();//清除用户信息
       router.replace('/login'); // 跳转到登录页
       return Promise.reject(error);
@@ -65,6 +73,7 @@ serverApi.interceptors.response.use(
         //切换成功更新token到pinia中
         userStore.updateToken(newToken.data)
       } else {
+        ElMessage.error('登录状态已过期，请重新登录');
         userStore.logout() //清空user
         router.replace('/') //跳转到首页
         return Promise.reject(error)

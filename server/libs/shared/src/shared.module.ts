@@ -4,11 +4,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ResponseModule } from './response/response.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { MinioModule } from './minio/minio.module';
 
 @Global()
 @Module({
   providers: [SharedService],
-  exports: [SharedService, PrismaModule, ResponseModule, JwtModule, ConfigModule],
+  exports: [SharedService, PrismaModule, ResponseModule, JwtModule, ConfigModule, MinioModule], // 导出 SharedService 和 PrismaModule，使其在其他模块中可用
   imports: [
     PrismaModule,
     ResponseModule,
@@ -23,6 +24,7 @@ import { JwtModule } from '@nestjs/jwt';
         secret: configService.get<string>('MY_SECRET_KEY'),//设置 JWT 的密钥，从环境变量中获取
         signOptions: { expiresIn: 10 },//  { expiresIn: '7d' } 设置 JWT 的过期时间为 7 天
       })
-    })],
+    }),
+    MinioModule],
 })
 export class SharedModule { }
