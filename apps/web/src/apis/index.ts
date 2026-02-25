@@ -32,12 +32,9 @@ serverApi.interceptors.request.use(
 serverApi.interceptors.response.use(
   response => response.data, // 直接返回响应数据
   async error => {
-    console.log(111);
     
     if(error.code == 'ERR_NETWORK'){
-      console.log(111);
       ElMessage.error('网络异常，请稍后再试');
-      console.log(222);
       
       return Promise.reject(error);
     }
@@ -92,7 +89,7 @@ serverApi.interceptors.response.use(
 
 //serverAi用于访问AI相关的API，这样可以根据不同的需求进行请求分离和管理
 export const serverAi = axios.create({
-  baseURL: '/api/ai/v1', // 设置基础URL，所有请求都会以这个URL为前缀
+  baseURL: '/ai/v1', // 设置基础URL，所有请求都会以这个URL为前缀
   timeout,
   headers: {
     'Content-Type': 'application/json',

@@ -27,6 +27,10 @@ export default defineConfig({
         target: `http://localhost:${config.ports.server}`,
         changeOrigin: true,
       },
+      '/ai':{
+        target: `http://localhost:${config.ports.ai}`,
+        changeOrigin: true,
+      }
     },
   }
 })
