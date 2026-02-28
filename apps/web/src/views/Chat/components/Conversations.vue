@@ -17,9 +17,11 @@ import { getChatMode } from '@/apis/chat'
 
 const active = ref<string | null>(null) //当前激活的id
 const chatMode = ref<ChatModeList>([]) //聊天模式列表，包含id和label
+const emits = defineEmits(["onGetRole"])
 
 const changeActive = (value: ChatMode) => {
     active.value = value.id
+    emits('onGetRole',value.role)
 }
 
 const getChatModeList = async () => {
@@ -28,6 +30,8 @@ const getChatModeList = async () => {
         if (res.code === 200) {
             chatMode.value = res.data
             active.value = res!.data[0]!.id //默认选中第一个
+            //派发事件
+            emits('onGetRole',res.data[0]?.role)
         }
     } catch (error) {
         console.log(error);
