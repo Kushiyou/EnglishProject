@@ -24,14 +24,20 @@ const getRole = async (params: ChatRoleType) => {
     list.value = res.data
 }
 
-const sendMessage = (message:string) => {
-    list.value.push({role: 'human', content: message}) //添加用户的消息
-    list.value.push({role: 'ai', content: ''}) //添加AI的消息
+const sendMessage = (message: string, deepThink: boolean, webSearch: boolean) => {
+    list.value.push({ role: 'human', content: message, type: 'chat' }) //添加用户的消息
+    list.value.push({ role: 'ai', content: '', reasoning: '', type: 'chat' }) //添加AI的消息
     console.log(list.value);
-    
-    sse<ChatMessage, ChatDto>(CHAT_URL, "POST", {role: role.value, content: message, userId: userId!
+
+    sse<ChatMessage, ChatDto>(CHAT_URL, "POST", {
+        role: role.value, content: message, userId: userId!, deepThink, webSearch
     }, (data) => {
-        list.value[list.value.length - 1].content += data.content
+        if (data.type === "reasoning") {
+            list.value[list.value.length - 1].reasoning += data.content
+        }
+        if (data.type === "chat") {
+            list.value[list.value.length - 1].content += data.content
+        }
     })
 }
 

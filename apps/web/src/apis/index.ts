@@ -5,7 +5,7 @@ import router from '@/router';
 import { refreshTokenApi } from './auth';
 import { ElMessage } from 'element-plus';
 
-export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.5:9000' : 'http://线上地址待定'
+export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.10:9000' : 'http://线上地址待定'
 const timeout = 50000; // 设置请求超时时间为50秒
 let isRefreshing = false; // 是否正在刷新token
 let requestQueue: ((token: string) => void)[] = []; // 刷新token的订阅者列表

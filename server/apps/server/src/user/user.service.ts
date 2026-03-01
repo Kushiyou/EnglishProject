@@ -166,7 +166,7 @@ export class UserService {
     const port = this.configService.get<string>('MINIO_PORT')! //端口9000
     const databaseUrl = `/${bucket}/${fileName}`//数据库url /avatar/1234567890-xiaomansdas.jpg
     const previewUrl = `${baseUrl}://${this.configService.get('MINIO_ENDPOINT')}:${port}${databaseUrl}`
-    //previewUrl->http://192.168.1.5:9000/avatar/1234567890-xiaomansdas.jpg
+    //previewUrl->http://192.168.1.10:9000/avatar/1234567890-xiaomansdas.jpg
     //databaseUrl->/avatar/1234567890-xiaomansdas.jpg
     return this.responseService.success({
       previewUrl,
