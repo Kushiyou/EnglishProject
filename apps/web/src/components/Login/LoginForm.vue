@@ -63,7 +63,6 @@ const handleLogin = async () => {
         if (res.code === 200) {
             //将数据存入pinia
             userStore.setUser(res.data)
-            console.log('localStorage user:', userStore.getUser)
             hide() //隐藏登录注册组件
         } else {
             ElMessage.error('登录失败:' + (res.code || '未知错误'))
