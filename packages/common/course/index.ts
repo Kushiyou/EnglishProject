@@ -5,7 +5,7 @@ export interface Course {
     description?: string; //课程描述
     teacher: string; //课程教师
     url: string; //课程封面minio地址
-    price: number; //课程价格
+    price: string; //课程价格
 }
 
 export type CourseList = Course[];

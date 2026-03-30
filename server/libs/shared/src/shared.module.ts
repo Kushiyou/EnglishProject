@@ -5,11 +5,12 @@ import { ResponseModule } from './response/response.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MinioModule } from './minio/minio.module';
+import { PayModule } from './pay/pay.module';
 
 @Global()
 @Module({
   providers: [SharedService],
-  exports: [SharedService, PrismaModule, ResponseModule, JwtModule, ConfigModule, MinioModule], // 导出 SharedService 和 PrismaModule，使其在其他模块中可用
+  exports: [SharedService, PrismaModule, ResponseModule, JwtModule, ConfigModule, MinioModule, PayModule], // 导出 SharedService 和 PrismaModule，使其在其他模块中可用
   imports: [
     PrismaModule,
     ResponseModule,
@@ -25,6 +26,7 @@ import { MinioModule } from './minio/minio.module';
         signOptions: { expiresIn: 10 },//  { expiresIn: '7d' } 设置 JWT 的过期时间为 7 天
       })
     }),
-    MinioModule],
+    MinioModule,
+    PayModule],
 })
 export class SharedModule { }

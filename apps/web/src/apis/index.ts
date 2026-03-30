@@ -6,6 +6,9 @@ import { refreshTokenApi } from './auth';
 import { ElMessage } from 'element-plus';
 
 export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.10:9000' : 'http://线上地址待定'
+//socket
+export const socketUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'http://线上地址待定'
+
 const timeout = 50000; // 设置请求超时时间为50秒
 let isRefreshing = false; // 是否正在刷新token
 let requestQueue: ((token: string) => void)[] = []; // 刷新token的订阅者列表
@@ -32,6 +35,7 @@ serverApi.interceptors.request.use(
 serverApi.interceptors.response.use(
   response => response.data, // 直接返回响应数据
   async error => {
+    console.log(error);
     
     if(error.code == 'ERR_NETWORK'){
       ElMessage.error('网络异常，请稍后再试');

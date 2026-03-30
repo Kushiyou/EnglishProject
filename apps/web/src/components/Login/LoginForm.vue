@@ -34,7 +34,6 @@ import md5 from 'md5'
 import { ElMessage } from 'element-plus'
 import { useLogin } from '@/hooks/useLogin'
 import { useUserStore } from '@/stores/user'
-import { f } from 'vue-router/dist/router-CWoNjPRp.mjs'
 const userStore = useUserStore()
 const { hide } = useLogin()
 const formRef = useTemplateRef('formRef')
