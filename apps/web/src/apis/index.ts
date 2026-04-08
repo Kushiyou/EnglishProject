@@ -5,7 +5,7 @@ import router from '@/router';
 import { refreshTokenApi } from './auth';
 import { ElMessage } from 'element-plus';
 
-export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.10:9000' : 'http://线上地址待定'
+export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.28:9000' : 'http://线上地址待定'
 //socket
 export const socketUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'http://线上地址待定'
 
@@ -33,13 +33,16 @@ serverApi.interceptors.request.use(
 )
 //响应拦截器，如果响应状态码是401，表示token无效或过期，需要刷新token
 serverApi.interceptors.response.use(
-  response => response.data, // 直接返回响应数据
+  response => response.data,
   async error => {
-    console.log(error);
+    console.log(error,'555');
     
     if(error.code == 'ERR_NETWORK'){
       ElMessage.error('网络异常，请稍后再试');
-      
+      return Promise.reject(error);
+    }
+    if (!error.response) {
+      ElMessage.error('服务器无响应，请检查后端服务是否启动');
       return Promise.reject(error);
     }
     if (error.response.status !== 401) {
@@ -50,6 +53,8 @@ serverApi.interceptors.response.use(
     const userStore = useUserStore();
     const refreshToken = userStore.getRefreshToken;
     const accessToken = userStore.getAccessToken;
+    
+    
     if (!refreshToken || !accessToken) {
       //如果没有refreshToken或者accessToken，表示用户没有登录或者登录状态已经过期，需要用户重新登录
       ElMessage.error('登录状态已过期，请重新登录');

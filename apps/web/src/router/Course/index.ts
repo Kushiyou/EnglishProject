@@ -6,6 +6,7 @@ export default [
         component: layout,
         children: [
             { path: 'index', component: () => import('@/views/Course/index.vue') },
+            { path: 'learn/:courseId/:title', component: () => import('@/views/Course/learn/index.vue') },
         ]
     }
 ]

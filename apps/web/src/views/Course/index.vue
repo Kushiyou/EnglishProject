@@ -56,7 +56,8 @@ const { login } = useLogin()
 
 import type { Course } from '@en/common/course';
 import { useUserStore } from '@/stores/user';
-
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const userStore = useUserStore();
 const currentTab = ref('list');
 const payVisible = ref(false); //控制支付弹框的显示
@@ -80,8 +81,12 @@ const imageSrc = (url: string) => {
 //购买课程
 const openPay = async (course: Course) => {
     await login()//判断是否登录
-    payVisible.value = true
-    selectedCourse.value = course
+    if (currentTab.value === 'list') {
+        payVisible.value = true
+        selectedCourse.value = course
+    }else{
+        router.push(`/courses/learn/${course.id}/${course.name}`)
+    }
 }
 
 onMounted(() => {

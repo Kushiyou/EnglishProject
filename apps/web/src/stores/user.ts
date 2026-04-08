@@ -9,9 +9,15 @@ export const useUserStore = defineStore('user', () => {
   }
   const getUser = computed(() => user.value)
   //导出accessToken
-  const getAccessToken = computed(() => user.value?.token.accessToken)
+  const getAccessToken = computed(() => user.value?.token?.accessToken)
   //导出refreshToken
-  const getRefreshToken = computed(() => user.value?.token.refreshToken)
+  const getRefreshToken = computed(() => user.value?.token?.refreshToken)
+  //更新用户单词数量
+  const updateUserWordNumber = (wordNumber: number) => {
+    console.log(wordNumber, "wordNumber");
+
+    user.value!.wordNumber = wordNumber
+  }
   //设置页面获取的默认用户信息
   const getUserInfo = computed<UserUpdate>(() => {
     return {
@@ -43,7 +49,7 @@ export const useUserStore = defineStore('user', () => {
     user.value = null
   }
 
-  return { user, setUser, getUser, logout, getAccessToken, getRefreshToken, updateToken, updateUser, getUserInfo }
+  return { user, setUser, getUser, logout, getAccessToken, getRefreshToken, updateToken, updateUser, getUserInfo, updateUserWordNumber }
 }, {
   persist: true, //启用持久化，将用户信息保存在localStorage中，刷新页面后仍然保持登录状态
 })
