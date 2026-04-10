@@ -3,7 +3,8 @@
 		"ai": "pnpm --filter @en/server run start:dev ai",
 		"server": "pnpm --filter @en/server run start:dev server",
 		"web": "pnpm --filter @en/web run dev",
-		"all": "concurrently \"pnpm run ai\" \"pnpm run server\" \"pnpm run web\""
+		"all": "concurrently \"pnpm run ai\" \"pnpm run server\" \"pnpm run web\"",
+		"deploy": "powershell -File ./deploy.ps1"
 	},
 	"dependencies": {
 		"@types/md5": "^2.3.6",
