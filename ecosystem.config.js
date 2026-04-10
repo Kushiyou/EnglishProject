@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'english-server',
-      cwd: './server',
+      cwd: '/home/admin/EnglishProject/server',
       script: 'node',
       args: 'dist/apps/server/apps/server/src/main.js',
       instances: 1,
@@ -16,7 +16,7 @@ module.exports = {
     },
     {
       name: 'english-ai',
-      cwd: './server',
+      cwd: '/home/admin/EnglishProject/server',
       script: 'node',
       args: 'dist/apps/ai/apps/ai/src/main.js',
       instances: 1,
@@ -26,18 +26,6 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3001
-      }
-    },
-    {
-      name: 'english-minio',
-      script: 'minio',
-      args: 'server /data/minio --console-address ":9001"',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      env: {
-        MINIO_ROOT_USER: 'admin',
-        MINIO_ROOT_PASSWORD: 'admin123456'
       }
     }
   ]
