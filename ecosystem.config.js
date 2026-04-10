@@ -4,7 +4,7 @@ module.exports = {
       name: 'english-server',
       cwd: './server',
       script: 'node',
-      args: 'dist/apps/server/main.js',
+      args: 'dist/apps/server/apps/server/src/main.js',
       instances: 1,
       autorestart: true,
       watch: false,
@@ -18,7 +18,7 @@ module.exports = {
       name: 'english-ai',
       cwd: './server',
       script: 'node',
-      args: 'dist/apps/ai/main.js',
+      args: 'dist/apps/ai/apps/ai/src/main.js',
       instances: 1,
       autorestart: true,
       watch: false,
@@ -37,7 +37,7 @@ module.exports = {
       watch: false,
       env: {
         MINIO_ROOT_USER: 'admin',
-        MINIO_ROOT_PASSWORD: '你的密码'
+        MINIO_ROOT_PASSWORD: 'admin123456'
       }
     }
   ]
