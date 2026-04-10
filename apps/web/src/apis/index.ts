@@ -5,9 +5,8 @@ import router from '@/router';
 import { refreshTokenApi } from './auth';
 import { ElMessage } from 'element-plus';
 
-export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.28:9000' : 'http://线上地址待定'
-//socket
-export const socketUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'http://线上地址待定'
+export const uploadUrl = import.meta.env.DEV ? 'http://192.168.1.28:9000' : 'http://39.106.120.241:9000'
+export const socketUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'http://39.106.120.241:3000'
 
 const timeout = 50000; // 设置请求超时时间为50秒
 let isRefreshing = false; // 是否正在刷新token
